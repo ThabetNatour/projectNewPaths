@@ -1,0 +1,102 @@
+<!--
+//תאבת נאטור חגאגרה - 212790406
+//חכם נאטור - 318486479
+//תוכנה 50\5
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phone Book</title>
+  <link rel="icon" href="./images/phone-book.png" type="image/png">
+  <link rel="stylesheet" href="./style/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+
+  <header>
+    <h1>Phone Book</h1>
+  </header>
+
+  <main>
+    <div class="container">
+      <div id="h2-contact-list">
+        <h2>Contact List</h2>
+      </div>
+      <div class="top-controls">
+        <input type="text" id="searchInput" placeholder="Search contacts..." />
+        <div class="top-controls-btn">
+          <button><i class="fas fa-user-plus"></i></button>
+          <button><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+
+      <ul class="contacts">
+        <li>
+          <div class="contact-info">
+            <img src="./images/blank-profile-picture.png" alt="Profile" class="contact-image" />
+            <span class="contact-name">John Doe</span>
+          </div>
+          <div class="contact-buttons">
+            <button title="Details"><i class="fas fa-info-circle"></i></button>
+            <button title="Edit"><i class="fas fa-edit"></i></button>
+            <button title="Delete"><i class="fas fa-trash-alt"></i></button>
+          </div>
+        </li>
+        <li>
+          <div class="contact-info">
+            <img src="./images/blank-profile-picture.png" alt="Profile" class="contact-image" />
+            <span class="contact-name">Jane Smith</span>
+          </div>
+          <div class="contact-buttons">
+            <button title="Details"><i class="fas fa-info-circle"></i></button>
+            <button title="Edit"><i class="fas fa-edit"></i></button>
+            <button title="Delete"><i class="fas fa-trash-alt"></i></button>
+          </div>
+        </li>
+        <li>
+          <div class="contact-info">
+            <img src="./images/blank-profile-picture.png" alt="Profile" class="contact-image" />
+            <span class="contact-name">Mike Johnson</span>
+          </div>
+          <div class="contact-buttons">
+            <button title="Details"><i class="fas fa-info-circle"></i></button>
+            <button title="Edit"><i class="fas fa-edit"></i></button>
+            <button title="Delete"><i class="fas fa-trash-alt"></i></button>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Info Popup Overlay -->
+    <div id="infoPopup" class="popup-overlay">
+      <div class="popup-content">
+        <span class="close-popup">&times;</span>
+        <h2>Contact Info</h2>
+        <span><strong>Name: </strong>Mike Johnson <span id="infoName"></span></span>
+        <br><br>
+        <span><strong>Phone Number: </strong>0522222222 <span id="infoPhone"></span></span>
+        <br><br>
+        <span><strong>Email: </strong>mikej@mikej.mikej <span id="infoEmail"></span></span>
+        <br><br>
+        <span><strong>Address: </strong>SomeWhere <span id="infoAddress"></span></span>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="copy-right">
+      <span>
+        &copy; All rights reserved - Natour Creations 2025
+      </span>
+    </div>
+  </footer>
+
+</body>
+
+</html>
