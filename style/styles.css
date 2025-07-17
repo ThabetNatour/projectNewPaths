@@ -44,7 +44,7 @@ footer {
 
 /*#region Container and layout */
 .container {
-  max-width: 800px;
+  max-width: 65%;
   margin: 0 auto;
   background-color: white;
   border-radius: 12px;
@@ -122,15 +122,27 @@ h2 {
   gap: 16px;
 }
 
+.namePhoneWrapper {
+  display: flex;
+  flex-direction: column;
+
+}
+
 .contact-image {
-  width: 50px;
-  height: 50px;
+  width: 65px;
+  height: 65px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .contact-name {
   font-size: 1.3em;
+  font-weight: 600;
+  padding-bottom: 10px;
+}
+
+.contact-phone {
+  font-size: 1em;
   font-weight: 600;
 }
 
@@ -157,7 +169,7 @@ h2 {
 
 /*#region popup overlay styling */
 .popup-overlay {
-  display: flex;
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -188,16 +200,22 @@ h2 {
   margin: 10px 0;
 }
 
-.close-popup {
+#close-popup {
+
   position: absolute;
   top: 8px;
   right: 12px;
   font-size: 24px;
   cursor: pointer;
   color: #999;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
 }
 
-.close-popup:hover {
+#close-popup:hover {
   color: #000;
 }
 
