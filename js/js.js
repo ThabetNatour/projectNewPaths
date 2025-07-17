@@ -44,6 +44,17 @@ function addContacts(contacts) {
   const ul = document.querySelector('.contacts');
   ul.innerHTML = '';
 
+  //הודעה מתאימה אם אין אנשי קשר במערך
+  if (contacts.length === 0) {
+    const noContactsMsg = document.createElement('p');
+    noContactsMsg.textContent = 'No contacts for now';
+    noContactsMsg.style.textAlign = 'center';
+    noContactsMsg.style.padding = '20px';
+    noContactsMsg.style.color = 'red'
+    ul.appendChild(noContactsMsg);
+    return;
+  }
+
   contacts.forEach((contact, index) => {
     const li = document.createElement('li');
 
@@ -82,10 +93,12 @@ function addContacts(contacts) {
 
     const editBtn = document.createElement('button');
     editBtn.title = 'Edit';
-    editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+    editBtn.id =
+      editBtn.innerHTML = '<i class="fas fa-edit"></i>';
 
     const deleteBtn = document.createElement('button');
     deleteBtn.title = 'Delete';
+    deleteBtn.id = 'delete-contact-btn';
     deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
 
     //בניית איש קשר ב HTML
@@ -98,35 +111,144 @@ function addContacts(contacts) {
     li.appendChild(btnsDiv);
     ul.appendChild(li);
 
-    //function for details button of the contact
+    //call function for details button of the contact
     detailsBtn.addEventListener('click', () => {
       showContactInfo(contact, index);
     });
+
+    //call function for delteing contact
+    deleteBtn.addEventListener('click', () => {
+      deleteThisContact(contact, index);
+    });
+
+    //call fucntion for edit contact
   });
 }
 
-//קריאה לפונקציה הוספת מערך של אנשי קשר ומיון מ א עד ת
-addContacts(contacts.sort((a, b) => a.name.localeCompare(b.name)));
+// function to count and sort contacts by name from A-Z
+function sortAndRenderContacts() {
+  const sortedContacts = [...contacts].sort((a, b) => a.name.localeCompare(b.name));
+
+  // עדכון סופר אנשי הקשר
+  const totalContacts = document.getElementById('num-total-contacts');
+  totalContacts.textContent = `Total Contacts: ${sortedContacts.length}`;
+
+  addContacts(sortedContacts);
+}
+// קריאה לפונקצה להצגת מערך
+sortAndRenderContacts();
+
+
+// Search contact input
+const searchContact = document.getElementById('searchInput');
+searchContact.addEventListener('input', (input) => {
+  //קליטת השם בשדה החיפוש
+  const term = input.target.value.toLowerCase().trim();
+  //סינון מערך אנשי קשר לפי הטקסט שהוקלד
+  const filtered = contacts.filter(contact => contact.name.toLowerCase().includes(term));
+  //מיון מ א' עד ת' לתוצאות לאחר סינון
+  const sortedAndFiltered = filtered.sort((a, b) => a.name.localeCompare(b.name));
+
+  const totalContacts = document.getElementById('num-total-contacts');
+  totalContacts.textContent = `Total Contacts: ${sortedAndFiltered.length}`;
+
+  addContacts(sortedAndFiltered);
+});
 
 
 // Delete All Contacts Button - מחיקת כל אנשי הקשר
-document.getElementById('delete-all').addEventListener('click', () => {
-  document.querySelector('.contacts').innerHTML = ''
+const deleteAllContacts = document.getElementById('delete-all');
+deleteAllContacts.addEventListener('click', () => {
+  const approveDeleteAll = confirm('Are you sure you want to delete all contacts?');
+  if (approveDeleteAll) {
+    contacts.length = 0;
+    sortAndRenderContacts();
+  }
 });
+
+
+// Delete specific contact
+function deleteThisContact(contact) {
+  const confirmDelete = confirm(`Are you sure you want to delete ${contact.name}?`);
+  if (confirmDelete) {
+    //חיפוש על אינדקס אמיתי של איש קשר בתוך מערך ומחיקתו
+    const index = contacts.findIndex(c => c === contact);
+    if (index !== -1) {
+      contacts.splice(index, 1);
+      sortAndRenderContacts();
+    }
+  }
+}
 
 
 // info POPUP - OPEN the full info of the contact
 function showContactInfo(contacts, index) {
+  document.getElementById('infoImage').src = contacts.image
   document.getElementById('infoName').textContent = contacts.name
   document.getElementById('infoPhone').textContent = contacts.phone
   document.getElementById('infoEmail').textContent = contacts.email
   document.getElementById('infoAddress').textContent = contacts.address
 
-  document.querySelector('.popup-overlay').style.display = 'flex'
+  document.getElementById('infoPopup').style.display = 'flex'
 };
 
-// info POPUP - CLOSE the full info of the contact
-const clspopup = document.getElementById('close-popup')
-clspopup.addEventListener('click', () => {
-  document.querySelector('.popup-overlay').style.display = 'none'
+
+
+// Add New Contact
+const AddNewContact = document.getElementById('addNewContact')
+AddNewContact.addEventListener('click', () => {
+  document.getElementById('addContactPopup').style.display = 'flex';
+  document.getElementById('addContactForm').reset();
+});
+
+
+const cancelBtn = document.getElementById('cancelContactBtn')
+cancelBtn.addEventListener('click', () => {
+  document.getElementById('addContactPopup').style.display = 'none'
+});
+
+
+
+const saveBtn = document.getElementById('saveContactBtn')
+saveBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('newName').value.trim();
+  const phone = document.getElementById('newPhone').value.trim();
+  const email = document.getElementById('newEmail').value.trim();
+  const address = document.getElementById('newAddress').value.trim();
+  const image = document.getElementById('newImage').value.trim();
+
+  if (!name || !phone) {
+    alert("Name and Phone number are required!")
+    return;
+  }
+
+  const newContact = {
+    name,
+    phone,
+    email,
+    address,
+    image: image || './images/blank-profile-picture.png'
+  };
+
+  contacts.push(newContact);
+
+
+  document.getElementById('addContactPopup').style.display = 'none';
+
+
+  sortAndRenderContacts();
+});
+
+
+// CLOSE POP-UPS
+const closePopupX = document.querySelectorAll('.close-popup');
+closePopupX.forEach(button => {
+  button.addEventListener('click', () => {
+    // מוצא את ה-Popup הכי קרוב שעוטף את הכפתור
+    const popup = button.closest('.popup-overlay');
+    if (popup)
+      popup.style.display = 'none';
+  });
 });

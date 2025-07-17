@@ -31,11 +31,12 @@
       <section id="contact-header">
         <div id="h2-contact-list">
           <h2>Contact List</h2>
+          <span id="num-total-contacts"></span>
         </div>
         <div class="top-controls">
           <input type="text" id="searchInput" placeholder="Search contact..." />
           <div class="top-controls-btn">
-            <button><i class="fas fa-user-plus"></i> Add New Contact</button>
+            <button id="addNewContact"><i class="fas fa-user-plus"></i> Add New Contact</button>
             <button id="delete-all"><i class="fas fa-trash"></i> Delete All</button>
           </div>
         </div>
@@ -50,17 +51,55 @@
     <!--MODAL - Info Popup Overlay -->
     <div id="infoPopup" class="popup-overlay">
       <div class="popup-content">
-        <button id="close-popup"><span>&times;</span></button>
-        <h2>Contact Info</h2>
-        <span><strong>Name: </strong><span id="infoName"></span></span>
-        <br><br>
-        <span><strong>Phone Number: </strong><span id="infoPhone"></span></span>
-        <br><br>
-        <span><strong>Email: </strong><span id="infoEmail"></span></span>
-        <br><br>
-        <span><strong>Address: </strong><span id="infoAddress"></span></span>
+        <button class="close-popup"><span>&times;</span></button>
+        <h2>Contact Information</h2>
+        <div>
+          <img id="infoImage" src="">
+        </div>
+        <div>
+          <span><strong>Name: </strong><span id="infoName"></span></span>
+          <br>
+          <span><strong>Phone Number: </strong><span id="infoPhone"></span></span>
+          <br>
+          <span><strong>Email: </strong><span id="infoEmail"></span></span>
+          <br>
+          <span><strong>Address: </strong><span id="infoAddress"></span></span>
+        </div>
       </div>
     </div>
+
+    <!-- MODAL - Add New Contact Popup Overlay -->
+    <div id="addContactPopup" class="popup-overlay">
+      <div class="popup-content">
+        <button id="close-add-contact" class="close-popup"><span>&times;</span></button>
+        <h2>Add New Contact</h2>
+
+        <form id="addContactForm">
+          <label for="newName">Name:</label>
+          <input type="text" id="newName" name="name" required>
+
+          <label for="newPhone">Phone Number:</label>
+          <input type="tel" id="newPhone" name="phone" required pattern="[0-9]{7,15}"
+            title="Enter a valid phone number">
+
+          <label for="newEmail">Email:</label>
+          <input type="email" id="newEmail" name="email">
+
+          <label for="newAddress">Address:</label>
+          <input type="text" id="newAddress" name="address">
+
+          <label for="newImage">Image URL:</label>
+          <input type="url" id="newImage" name="image" placeholder="https://example.com/photo.jpg">
+
+          <div class="form-buttons">
+            <button type="submit" id="saveContactBtn">Save Contact</button>
+            <button type="button" id="cancelContactBtn" class="cancel-btn">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
   </main>
 
   <footer>
