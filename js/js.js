@@ -1,5 +1,9 @@
 'use strict';
-//DOM
+
+//תאבת נאטור חגאגרה - 212790406
+//חכם נאטור - 318486479
+//תוכנה 50/5
+//PHONE BOOK
 
 
 // מערך של אובייקטים CONTACTS
@@ -35,7 +39,7 @@ const contacts = [
 ];
 
 
-// function that creates li - contact with full inner html.
+// function that creates "li" - contact with full inner html.
 function addContacts(contacts) {
   const ul = document.querySelector('.contacts');
   ul.innerHTML = '';
@@ -43,7 +47,7 @@ function addContacts(contacts) {
   contacts.forEach((contact, index) => {
     const li = document.createElement('li');
 
-    // יצירת חלק שמכיל תמונה ושם ומספר טלפון
+    // יצירת חלק ימיני שמכיל תמונה, שם ומספר טלפון
     const leftDiv = document.createElement('div');
     leftDiv.className = 'contact-info';
 
@@ -68,7 +72,7 @@ function addContacts(contacts) {
     leftDiv.appendChild(img);
     leftDiv.appendChild(infoDiv);
 
-    // יצירת חלק של כפתורים
+    // יצירת חלק שמאלי של כפתורים
     const btnsDiv = document.createElement('div');
     btnsDiv.className = 'contact-buttons';
 
@@ -84,7 +88,7 @@ function addContacts(contacts) {
     deleteBtn.title = 'Delete';
     deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
 
-
+    //בניית איש קשר ב HTML
     btnsDiv.appendChild(detailsBtn);
     btnsDiv.appendChild(editBtn);
     btnsDiv.appendChild(deleteBtn);
@@ -94,8 +98,10 @@ function addContacts(contacts) {
     li.appendChild(btnsDiv);
     ul.appendChild(li);
 
-    //functions for details button of the contact
-
+    //function for details button of the contact
+    detailsBtn.addEventListener('click', () => {
+      showContactInfo(contact, index);
+    });
   });
 }
 
@@ -103,9 +109,24 @@ function addContacts(contacts) {
 addContacts(contacts.sort((a, b) => a.name.localeCompare(b.name)));
 
 
-// Delete all - מחיקת כל אנשי הקשר
+// Delete All Contacts Button - מחיקת כל אנשי הקשר
 document.getElementById('delete-all').addEventListener('click', () => {
   document.querySelector('.contacts').innerHTML = ''
 });
 
 
+// info POPUP - OPEN the full info of the contact
+function showContactInfo(contacts, index) {
+  document.getElementById('infoName').textContent = contacts.name
+  document.getElementById('infoPhone').textContent = contacts.phone
+  document.getElementById('infoEmail').textContent = contacts.email
+  document.getElementById('infoAddress').textContent = contacts.address
+
+  document.querySelector('.popup-overlay').style.display = 'flex'
+};
+
+// info POPUP - CLOSE the full info of the contact
+const clspopup = document.getElementById('close-popup')
+clspopup.addEventListener('click', () => {
+  document.querySelector('.popup-overlay').style.display = 'none'
+});
