@@ -29,6 +29,8 @@ header {
   text-align: center;
 }
 
+
+
 main {
   flex: 1;
   padding: 20px;
@@ -123,10 +125,6 @@ h2 {
   padding: 18px 14px;
   border-bottom: 1px solid #eee;
   transition: background-color 0.2s ease;
-}
-
-.contacts li:hover {
-  background-color: #f9f9f9;
 }
 
 .contact-info {
@@ -327,3 +325,91 @@ h2 {
 }
 
 /*#endregion Contact Form*/
+
+/*#region Dark Mode button and theme*/
+
+.top-theme-toggle {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.9em;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.top-theme-toggle:hover {
+  background-color: gray;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: white;
+}
+
+body.dark-mode header {
+  background-color: #111;
+  color: white;
+}
+
+body.dark-mode .container,
+body.dark-mode main,
+body.dark-mode h2 {
+  background-color: #1e1e1e;
+  color: white;
+}
+
+body.dark-mode footer {
+  background-color: #111;
+  color: #aaa;
+}
+
+body.dark-mode .contacts li {
+  background-color: #2a2a2a;
+  color: #eee;
+  border-color: #444;
+}
+
+body.dark-mode .contact-buttons button {
+  color: #ccc;
+}
+
+body.dark-mode .contact-buttons button:hover {
+  color: #0af;
+}
+
+body.dark-mode .popup-content {
+  background-color: #2a2a2a;
+  color: #eee;
+}
+
+body.dark-mode input,
+body.dark-mode input:focus {
+  background-color: #333;
+  color: #f1f1f1;
+  border-color: #555;
+}
+
+body.dark-mode label {
+  color: #ddd;
+}
+
+body.dark-mode #saveContactBtn {
+  background-color: #3cb371;
+}
+
+body.dark-mode #saveContactBtn:hover {
+  background-color: #2e8b57;
+}
+
+body.dark-mode #cancelContactBtn {
+  background-color: #b22222;
+}
+
+body.dark-mode #cancelContactBtn:hover {
+  background-color: #8b0000;
+}
+
+/*#endregion Dark Mode button and theme*/

@@ -5,6 +5,8 @@
 //תוכנה 50/5
 //PHONE BOOK
 
+let displayedContacts = [];
+let currentEditIndex = null;
 
 // מערך של אובייקטים CONTACTS
 const contacts = [
@@ -58,6 +60,20 @@ function addContacts(contacts) {
   contacts.forEach((contact, index) => {
     const li = document.createElement('li');
 
+    // --- אירועי עכבר על li ---
+    li.addEventListener('mouseenter', () => {
+      if (document.body.classList.contains('dark-mode')) {
+        li.style.backgroundColor = 'gray'
+      }
+      else {
+        li.style.backgroundColor = '#f9f9f9';
+      }
+    });
+
+    li.addEventListener('mouseleave', () => {
+      li.style.backgroundColor = '';
+    });
+
     // יצירת חלק ימיני שמכיל תמונה, שם ומספר טלפון
     const leftDiv = document.createElement('div');
     leftDiv.className = 'contact-info';
@@ -93,12 +109,10 @@ function addContacts(contacts) {
 
     const editBtn = document.createElement('button');
     editBtn.title = 'Edit';
-    editBtn.id =
-      editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+    editBtn.innerHTML = '<i class="fas fa-edit"></i>';
 
     const deleteBtn = document.createElement('button');
     deleteBtn.title = 'Delete';
-    deleteBtn.id = 'delete-contact-btn';
     deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
 
     //בניית איש קשר ב HTML
@@ -110,49 +124,75 @@ function addContacts(contacts) {
     li.appendChild(leftDiv);
     li.appendChild(btnsDiv);
     ul.appendChild(li);
-
-    //call function for details button of the contact
-    detailsBtn.addEventListener('click', () => {
-      showContactInfo(contact, index);
-    });
-
-    //call function for delteing contact
-    deleteBtn.addEventListener('click', () => {
-      deleteThisContact(contact, index);
-    });
-
-    //call fucntion for edit contact
   });
 }
 
+
+// theme Toggle button activation
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+themeToggleBtn.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+
+  if (document.body.classList.contains('dark-mode')) {
+    // מצב כהה פעיל
+    themeToggleBtn.textContent = '☀️ Light Mode';
+    themeToggleBtn.style.backgroundColor = 'white';
+    themeToggleBtn.style.color = 'black';
+  } else {
+    // מצב רגיל
+    themeToggleBtn.textContent = '🌙 Dark Mode';
+    themeToggleBtn.style.backgroundColor = 'black';
+    themeToggleBtn.style.color = 'white';
+  }
+});
+
+
 // function to count and sort contacts by name from A-Z
 function sortAndRenderContacts() {
-  const sortedContacts = [...contacts].sort((a, b) => a.name.localeCompare(b.name));
+  displayedContacts = [...contacts].sort((a, b) => a.name.localeCompare(b.name));
 
-  // עדכון סופר אנשי הקשר
   const totalContacts = document.getElementById('num-total-contacts');
-  totalContacts.textContent = `Total Contacts: ${sortedContacts.length}`;
+  totalContacts.textContent = `Total Contacts: ${displayedContacts.length}`;
 
-  addContacts(sortedContacts);
+  addContacts(displayedContacts);
 }
-// קריאה לפונקצה להצגת מערך
 sortAndRenderContacts();
+
+
+// Event Delegation, find the closest li to Contact Buttons and do
+document.querySelector('.contacts').addEventListener('click', (event) => {
+  const li = event.target.closest('li');
+  if (!li) return;
+
+  const index = Array.from(li.parentElement.children).indexOf(li);
+  const contact = displayedContacts[index];
+
+  if (!contact) return;
+
+  if (event.target.closest('button[title="Edit"]')) {
+    editContact(contact);
+  } else if (event.target.closest('button[title="Delete"]')) {
+    deleteThisContact(contact);
+  } else if (event.target.closest('button[title="Details"]')) {
+    showContactInfo(contact);
+  }
+});
 
 
 // Search contact input
 const searchContact = document.getElementById('searchInput');
 searchContact.addEventListener('input', (input) => {
-  //קליטת השם בשדה החיפוש
   const term = input.target.value.toLowerCase().trim();
-  //סינון מערך אנשי קשר לפי הטקסט שהוקלד
   const filtered = contacts.filter(contact => contact.name.toLowerCase().includes(term));
-  //מיון מ א' עד ת' לתוצאות לאחר סינון
   const sortedAndFiltered = filtered.sort((a, b) => a.name.localeCompare(b.name));
 
-  const totalContacts = document.getElementById('num-total-contacts');
-  totalContacts.textContent = `Total Contacts: ${sortedAndFiltered.length}`;
+  displayedContacts = sortedAndFiltered;
 
-  addContacts(sortedAndFiltered);
+  const totalContacts = document.getElementById('num-total-contacts');
+  totalContacts.textContent = `Total Contacts: ${displayedContacts.length}`;
+
+  addContacts(displayedContacts);
 });
 
 
@@ -182,36 +222,54 @@ function deleteThisContact(contact) {
 
 
 // info POPUP - OPEN the full info of the contact
-function showContactInfo(contacts, index) {
-  document.getElementById('infoImage').src = contacts.image
-  document.getElementById('infoName').textContent = contacts.name
-  document.getElementById('infoPhone').textContent = contacts.phone
-  document.getElementById('infoEmail').textContent = contacts.email
-  document.getElementById('infoAddress').textContent = contacts.address
+function showContactInfo(contact, index) {
+  document.getElementById('infoImage').src = contact.image
+  document.getElementById('infoName').textContent = contact.name
+  document.getElementById('infoPhone').textContent = contact.phone
+  document.getElementById('infoEmail').textContent = contact.email
+  document.getElementById('infoAddress').textContent = contact.address
 
   document.getElementById('infoPopup').style.display = 'flex'
 };
 
 
-
-// Add New Contact
+// activating Add New Contact button
 const AddNewContact = document.getElementById('addNewContact')
 AddNewContact.addEventListener('click', () => {
+  currentEditIndex = null;
   document.getElementById('addContactPopup').style.display = 'flex';
   document.getElementById('addContactForm').reset();
+  document.getElementById('AddOrEdit').textContent = "Add New Contact";
 });
 
 
+// activating Edit Contact Function
+function editContact(contact, index) {
+  currentEditIndex = contacts.findIndex(c => c === contact);
+
+  document.getElementById('addContactPopup').style.display = 'flex';
+  document.getElementById('AddOrEdit').textContent = "Edit Contact";
+
+  document.getElementById('newName').value = contact.name;
+  document.getElementById('newPhone').value = contact.phone;
+  document.getElementById('newEmail').value = contact.email;
+  document.getElementById('newAddress').value = contact.address;
+  document.getElementById('newImage').value = contact.image;
+}
+
+
+// activating Cancel Button
 const cancelBtn = document.getElementById('cancelContactBtn')
 cancelBtn.addEventListener('click', () => {
   document.getElementById('addContactPopup').style.display = 'none'
 });
 
 
-
+// activating Save button to Add or Edit new Contact
 const saveBtn = document.getElementById('saveContactBtn')
 saveBtn.addEventListener('click', (e) => {
   e.preventDefault();
+  document.getElementById('AddOrEdit').textContent = "Add New Contact";
 
   const name = document.getElementById('newName').value.trim();
   const phone = document.getElementById('newPhone').value.trim();
@@ -219,12 +277,14 @@ saveBtn.addEventListener('click', (e) => {
   const address = document.getElementById('newAddress').value.trim();
   const image = document.getElementById('newImage').value.trim();
 
+  //בדיקת מילוי שם + מספר טלפון חובה
   if (!name || !phone) {
-    alert("Name and Phone number are required!")
+    alert("Name and Phone number are required!");
     return;
   }
 
-  const newContact = {
+  //יצירת אובייקט חדש
+  const updatedContact = {
     name,
     phone,
     email,
@@ -232,11 +292,17 @@ saveBtn.addEventListener('click', (e) => {
     image: image || './images/blank-profile-picture.png'
   };
 
-  contacts.push(newContact);
-
+  if (currentEditIndex !== null) {
+    // מצב עריכה
+    contacts[currentEditIndex] = updatedContact;
+    currentEditIndex = null;
+  } else {
+    // מצב הוספה
+    contacts.push(updatedContact);
+  }
 
   document.getElementById('addContactPopup').style.display = 'none';
-
+  document.getElementById('addContactForm').reset();
 
   sortAndRenderContacts();
 });
