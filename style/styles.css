@@ -37,7 +37,7 @@ main {
 }
 
 footer {
-  background-color: #222;
+  background-color: #0f0981;
   color: white;
   text-align: center;
   padding: 10px;
@@ -354,9 +354,7 @@ body.dark-mode header {
   color: white;
 }
 
-body.dark-mode .container,
-body.dark-mode main,
-body.dark-mode h2 {
+body.dark-mode main {
   background-color: #1e1e1e;
   color: white;
 }
@@ -366,6 +364,8 @@ body.dark-mode footer {
   color: #aaa;
 }
 
+body.dark-mode .container,
+body.dark-mode h2,
 body.dark-mode .contacts li {
   background-color: #2a2a2a;
   color: #eee;
@@ -392,10 +392,6 @@ body.dark-mode input:focus {
   border-color: #555;
 }
 
-body.dark-mode label {
-  color: #ddd;
-}
-
 body.dark-mode #saveContactBtn {
   background-color: #3cb371;
 }
@@ -410,6 +406,17 @@ body.dark-mode #cancelContactBtn {
 
 body.dark-mode #cancelContactBtn:hover {
   background-color: #8b0000;
+}
+
+body.dark-mode .popup-content {
+  color: white;
+}
+
+body.dark-mode #addContactForm label,
+body.dark-mode #infoPopup span,
+body.dark-mode #infoPopup strong {
+  color: #eee !important;
+
 }
 
 /*#endregion Dark Mode button and theme*/

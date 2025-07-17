@@ -277,13 +277,44 @@ saveBtn.addEventListener('click', (e) => {
   const address = document.getElementById('newAddress').value.trim();
   const image = document.getElementById('newImage').value.trim();
 
-  //בדיקת מילוי שם + מספר טלפון חובה
+  //Checking name, phone numebr and email
   if (!name || !phone) {
     alert("Name and Phone number are required!");
     return;
   }
 
-  //יצירת אובייקט חדש
+  if (isNaN(phone) || phone.length != 10) {
+    alert("Invaled phone number! phone number must contain 10 digits of numbers only.")
+    return;
+  }
+
+  if (email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("Invalid email address!");
+      return;
+    }
+  }
+
+  //Checking duplicate name or phone number
+  const nameTrimmed = name.trim().toLowerCase();
+  const phoneTrimmed = phone.trim();
+
+  const isDuplicate = contacts.some((contact, index) => {
+    if (index === currentEditIndex)
+      return false; // דילוג למצב עריכה
+    return (
+      contact.name.trim().toLowerCase() === nameTrimmed ||
+      contact.phone.trim() === phoneTrimmed
+    );
+  });
+
+  if (isDuplicate) {
+    alert("Contact with the same name or phone number already exists.");
+    return;
+  }
+
+  // Create/Update Contact object
   const updatedContact = {
     name,
     phone,
